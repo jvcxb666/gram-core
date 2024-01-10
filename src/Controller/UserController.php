@@ -20,15 +20,27 @@ class UserController extends AbstractController
         $this->service = $userService;
     }
 
-    #[Route('/login/', name: 'app_login')]
+    #[Route('/login/', name: 'app_login', methods: "POST")]
     public function index(Request $request): JsonResponse
     {
-        return $this->json($this->service->login($request->get('data')));
+        try{
+            $result = $this->service->login($request->get('data') ?? []);
+        }catch(\Exception $e){
+            $result = ['error' => "Internal server error", 'message' => $e->getMessage()];
+        }
+
+        return $this->json($result);
     }
 
-    #[Route('/register/', name: 'app_register')]
+    #[Route('/register/', name: 'app_register', methods: "POST")]
     public function register(Request $request): JsonResponse
     {
-        return $this->json($this->service->save($request->get('data') ?? []));
+        try{
+            $result = $this->service->save($request->get('data') ?? []);
+        }catch(\Exception $e){
+            $result = ['error' => "Internal server error", 'message' => $e->getMessage()];
+        }
+
+        return $this->json($result);
     }
 }
