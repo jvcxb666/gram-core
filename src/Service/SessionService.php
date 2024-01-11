@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Session;
+use App\Service\Interface\ServiceInterface;
 use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManagerInterface;

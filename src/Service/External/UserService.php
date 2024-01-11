@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Service;
+namespace App\Service\External;
 
 use App\Helper\EnvProvider;
+use App\Service\Interface\ServiceInterface;
+use App\Service\Logic\ExternalService;
 use App\Service\SessionService;
 
 class UserService extends ExternalService implements ServiceInterface

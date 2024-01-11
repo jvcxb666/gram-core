@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service;
+namespace App\Service\Logic;
 
 use Symfony\Component\HttpClient\CurlHttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;

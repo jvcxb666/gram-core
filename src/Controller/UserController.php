@@ -2,9 +2,8 @@
 
 namespace App\Controller;
 
-use App\Service\ExternalService;
-use App\Service\ServiceInterface;
-use App\Service\UserService;
+use App\Service\Interface\ServiceInterface;
+use App\Service\External\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
