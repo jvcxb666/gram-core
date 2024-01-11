@@ -2,7 +2,6 @@
 
 namespace App\Service\External;
 
-use App\Entity\User;
 use App\Helper\EnvProvider;
 use App\Service\Interface\ServiceInterface;
 use App\Service\Logic\ExternalService;
@@ -13,16 +12,18 @@ use SplSubject;
 
 class UserService extends ExternalService implements ServiceInterface, SplSubject
 {
+
+    public ?array $data;
     private string $url;
     private ServiceInterface $sessionService;
     private SplObjectStorage $observers;
-    private array $data;
 
     public function __construct(SessionService $sessionService)
     {
         parent::__construct();
         $this->url = EnvProvider::get("SERVICE_USER_URL");
         $this->sessionService = $sessionService;
+        $this->observers = new SplObjectStorage();
     }
 
     public function login(?array $data): ?array
@@ -71,7 +72,7 @@ class UserService extends ExternalService implements ServiceInterface, SplSubjec
         if(empty($this->data)) return;
 
         foreach($this->observers as $observer){
-            $observer->update();
+            $observer->update($this);
         }
         
         unset($this->data);

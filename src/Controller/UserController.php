@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Service\Interface\ServiceInterface;
 use App\Service\External\UserService;
+use App\Service\Logic\Observer\NewUserObserver;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,9 +15,10 @@ class UserController extends AbstractController
 
     private ServiceInterface $service;
 
-    public function __construct(UserService $userService)
+    public function __construct(UserService $userService, NewUserObserver $serviceObserver)
     {
         $this->service = $userService;
+        $this->service->attach($serviceObserver);
     }
 
     #[Route('/login/', name: 'app_login', methods: "POST")]

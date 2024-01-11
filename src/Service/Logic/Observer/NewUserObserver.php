@@ -7,7 +7,7 @@ use App\Service\SessionService;
 use SplObserver;
 use SplSubject;
 
-class newUserObserver implements SplObserver
+class NewUserObserver implements SplObserver
 {
     private ServiceInterface $sessionService;
 
@@ -16,8 +16,11 @@ class newUserObserver implements SplObserver
         $this->sessionService = $sessionService;
     }
 
-    public function update(SplSubject $user): void
+    public function update(SplSubject $serviceState): void
     {
-        //Some code goes here
+        $data = $serviceState->data;
+
+        if(!empty($data['preferences']));
+        if(!empty($data['information']));
     }
 }
