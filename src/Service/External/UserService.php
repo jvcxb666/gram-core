@@ -39,8 +39,10 @@ class UserService extends ExternalService implements ServiceInterface
         $result = $this->postRequest("{$this->url}/create/",$data);
         if(!empty($result['result']['error'])) return $result;
         $data['user_id'] = $result['result']['user'];
-        $session = $this->sessionService->save($data)['object'] ?? null;
-        $result['sessid'] = $session->getSessId() ?? null;
+        if($result['result']['new'] == true){
+            $session = $this->sessionService->save($data)['object'] ?? null;
+            $result['sessid'] = $session->getSessId() ?? null;
+        }
         return $result;
     }
 
