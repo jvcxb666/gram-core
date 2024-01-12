@@ -20,7 +20,7 @@ class RequestListenerSubscriber implements EventSubscriberInterface
     public function onKernelRequest(RequestEvent $event): void
     {
         if($event->getRequest()->getPathInfo() == '/login/' || $event->getRequest()->getPathInfo() == '/register/') return;
-        $sessionId = $event->getRequest()->get("session");
+        $sessionId = $event->getRequest()->get("sessid");
         
         if(!$this->service->checkSession($sessionId)){
             $this->returnUnauthorized($event);
