@@ -36,7 +36,7 @@ abstract class AbstractExternalService
 
     protected function postRequest(string $url,?array $data,?bool $cache = null)
     {
-        if($cache == null) $cache = $this->cache;
+        if($cache === null) $cache = $this->cache;
         try{
             $cache_key = $url.json_encode($data);
             if($cache) if(!empty(Cacher::getValue($cache_key))) return ['result'=>json_decode(Cacher::getValue($cache_key),1)];
