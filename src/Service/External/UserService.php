@@ -19,7 +19,7 @@ class UserService extends AbstractExternalService implements ServiceInterface
 
     public function login(?array $data): ?array
     {
-        $result = $this->postRequest("{self::getServiceUrl()}/login/",$data);
+        $result = $this->postRequest("{$this->getServiceUrl()}/login/",$data);
         if($result['result']['result'] != true) return ["result"=>["error"=>"Wrong username or password"]];
         $data['user_id'] = $result['result']['user'];
         $session = $this->sessionService->save($data)['object'] ?? null;
@@ -36,7 +36,7 @@ class UserService extends AbstractExternalService implements ServiceInterface
 
     public function save(array $data): ?array
     {
-        $result = $this->postRequest("{self::getServiceUrl()}/create/",$data);
+        $result = $this->postRequest("{$this->getServiceUrl()}/create/",$data);
         if(!empty($result['result']['error'])) return $result;
         $data['user_id'] = $result['result']['user'];
         if($result['result']['new'] == true){
@@ -50,6 +50,6 @@ class UserService extends AbstractExternalService implements ServiceInterface
     {
         if(empty($data['id'])) return ["error"=>"No user id"];
 
-        return $this->postRequest("{self::getServiceUrl()}/delete/",$data);
+        return $this->postRequest("{$this->getServiceUrl()}/delete/",$data);
     }
 }
