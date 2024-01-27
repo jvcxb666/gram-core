@@ -10,11 +10,13 @@ abstract class AbstractExternalService
 {
     protected HttpClientInterface $client;
     protected static string $baseUrl;
+    protected bool $cache;
 
     public function __construct(string $url)
     {
         self::$baseUrl = $url;
         $this->client = new CurlHttpClient();
+        $this->cache = true;
     }
 
     public static function getServiceUrl()
@@ -27,8 +29,14 @@ abstract class AbstractExternalService
         Cacher::dropGroup(self::$baseUrl);
     }
 
-    protected function postRequest(string $url,?array $data,bool $cache = true)
+    protected function disableCache(): void
     {
+        $this->cache = false;
+    }
+
+    protected function postRequest(string $url,?array $data,?bool $cache = null)
+    {
+        if($cache == null) $cache = $this->cache;
         try{
             $cache_key = $url.json_encode($data);
             if($cache) if(!empty(Cacher::getValue($cache_key))) return ['result'=>json_decode(Cacher::getValue($cache_key),1)];
