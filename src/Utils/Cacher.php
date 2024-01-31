@@ -37,6 +37,19 @@ class Cacher
         self::getInstance()->executeRaw(["DEL",$key]);
     }
 
+    public static function push(string $qName, array $data, string $action, array $action_params): void
+    {
+        if(empty($qName) || empty($action)) return;
+
+        $content = json_encode([
+            'action' => $action,
+            'params' => $action_params,
+            'data' => $data
+        ]);
+
+        self::getInstance()->lpush($qName,$content);
+    }
+
     public static function dropGroup(string $key): void
     {
         $client = self::getInstance();

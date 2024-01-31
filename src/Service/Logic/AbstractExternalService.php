@@ -39,7 +39,7 @@ abstract class AbstractExternalService
         if($cache === null) $cache = $this->cache;
         try{
             $cache_key = $url.json_encode($data);
-            if($cache) if(!empty(Cacher::getValue($cache_key))) return ['result'=>json_decode(Cacher::getValue($cache_key),1)];
+            if($cache && !empty(Cacher::getValue($cache_key))) return ['result'=>json_decode(Cacher::getValue($cache_key),1)];
 
             $response = $this->client->request("POST",$url,[
                 'body' => http_build_query($data),
