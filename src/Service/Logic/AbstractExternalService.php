@@ -11,12 +11,14 @@ abstract class AbstractExternalService
     protected HttpClientInterface $client;
     protected static string $baseUrl;
     protected bool $cache;
+    private ?string $session;
 
     public function __construct(string $url)
     {
         self::$baseUrl = $url;
         $this->client = new CurlHttpClient();
         $this->cache = true;
+        $this->session = $_SESSION['sessid'] ?? null;
     }
 
     public static function getServiceUrl()
@@ -24,9 +26,10 @@ abstract class AbstractExternalService
         return self::$baseUrl;
     }
 
-    protected function dropCache()
+    protected function dropCache($all = false)
     {
-        Cacher::dropGroup(self::$baseUrl);
+        if($all === false && !empty($this->session)) Cacher::dropGroup(self::$baseUrl, $this->session);
+        if($all === true) Cacher::dropGroup(self::$baseUrl);
     }
 
     protected function disableCache(): void
@@ -38,7 +41,7 @@ abstract class AbstractExternalService
     {
         if($cache === null) $cache = $this->cache;
         try{
-            $cache_key = $url.json_encode($data);
+            $cache_key = $this->session.$url.json_encode($data);
             if($cache && !empty(Cacher::getValue($cache_key))) return ['result'=>json_decode(Cacher::getValue($cache_key),1)];
 
             $response = $this->client->request("POST",$url,[

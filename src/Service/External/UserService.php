@@ -43,14 +43,14 @@ class UserService extends AbstractExternalService implements ServiceInterface
             $session = $this->sessionService->save($data)['object'] ?? null;
             $result['sessid'] = $session->getSessId() ?? null;
         }
-        $this->dropCache();
+        $this->dropCache(true);
         return $result;
     }
 
     public function remove(int $id): ?array
     {
         if(empty($data['id'])) return ["error"=>"No user id"];
-        $this->dropCache();
+        $this->dropCache(true);
         return $this->postRequest("{$this->getServiceUrl()}/delete/",$data,false);
     }
 }

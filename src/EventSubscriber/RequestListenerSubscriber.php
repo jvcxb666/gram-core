@@ -26,6 +26,8 @@ class RequestListenerSubscriber implements EventSubscriberInterface
             $this->returnUnauthorized($event);
             return;
         }
+
+        $_SESSION['sessid'] = $sessionId;
     }
 
     private function returnUnauthorized(RequestEvent $event): void

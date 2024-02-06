@@ -50,13 +50,17 @@ class Cacher
         self::getInstance()->lpush($qName,$content);
     }
 
-    public static function dropGroup(string $key): void
+    public static function dropGroup(string $key,?string $session = null): void
     {
         $client = self::getInstance();
         $keys = $client->keys("*$key*");
         foreach($keys as $key)
         {
-            self::dropValue($key);
+            if(empty($session)) {
+                self::dropValue($key);
+            } else if (str_contains($key,$session)) {
+                self::dropValue($key);
+            }
         }
     }
 }
